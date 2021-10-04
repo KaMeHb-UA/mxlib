@@ -15,10 +15,12 @@ fn raw_call<R, A>(base &urllib.URL, method http.Method, path string, headers map
 		method: method
 	}
 	if method == http.Method.post || method == http.Method.put || method == http.Method.patch {
-		fetch_config.header = http.new_header(http.HeaderConfig {
+		mut header := http.new_header(http.HeaderConfig {
 			key: http.CommonHeader.content_type
 			value: 'application/json'
 		})
+		header.add_custom_map(headers)?
+		fetch_config.header = header
 		fetch_config.data = json.encode(args)
 	}
 	r := http.fetch(fetch_config)?

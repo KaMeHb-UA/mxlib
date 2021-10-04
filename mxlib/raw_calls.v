@@ -24,8 +24,15 @@ fn raw_call<R, A>(base &urllib.URL, method http.Method, path string, headers map
 		fetch_config.data = json.encode(args)
 	}
 	r := http.fetch(fetch_config)?
+
+	// compile-time type fields definition
+	mut type_fields := map[string]bool
+	$for field in R.fields {
+        type_fields[field.name] = true
+    }
+
 	dmap := json.decode(map[string]bool, r.text)?
-	if 'errcode' in dmap {
+	if !('errcode' in type_fields) && 'errcode' in dmap {
 		err := json.decode(ErrResp, r.text)?
 		return error('$err.errcode: $err.error')
 	}

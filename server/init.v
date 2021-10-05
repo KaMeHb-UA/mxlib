@@ -36,7 +36,7 @@ pub fn new(proto string, host string, port int) ?&Server {
 			versions[version_parts[0]][version_parts[1]] << version_parts[2]
 		}
 	}
-	mut server := &Server{homeserver, identity_server, versions, r.unstable_features, []LoginFlow{}}
+	mut server := &Server{homeserver, identity_server, versions, r.unstable_features, []string{}}
 	server.get_login_flows()?
 	return server
 }

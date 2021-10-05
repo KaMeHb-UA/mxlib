@@ -10,7 +10,7 @@ pub struct Server {
 	versions map[string]map[string][]string
 	unstable_features map[string]bool
 	mut:
-	login_flows []LoginFlow
+	login_flows []string
 }
 
 fn (s &Server) get_suitable_version(versions []string) ?string {
@@ -56,5 +56,7 @@ pub fn (s &Server) supports_version(version string) bool {
 
 pub fn (mut s Server) get_login_flows() ? {
 	resp := s.raw_call<RespLogin, Null>(http.Method.get, ['r0'], 'login', map[string]string{}, Null{})?
-	s.login_flows = resp.flows
+	s.login_flows = resp.flows.map(fn(flow LoginFlow) string {
+		return flow.typ
+	})
 }

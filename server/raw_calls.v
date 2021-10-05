@@ -1,13 +1,8 @@
-module mxlib
+module server
 
 import net.http
 import net.urllib
 import json
-
-struct ErrResp{
-	errcode string
-	error string
-}
 
 fn raw_call<R, A>(base &urllib.URL, method http.Method, path string, headers map[string]string, args A) ?R {
 	mut fetch_config := &http.FetchConfig {

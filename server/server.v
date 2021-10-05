@@ -1,4 +1,4 @@
-module mxlib
+module server
 
 import net.http
 import net.urllib

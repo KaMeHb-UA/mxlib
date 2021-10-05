@@ -1,4 +1,11 @@
-module mxlib
+module server
+
+struct Null{}
+
+struct ErrResp{
+	errcode string
+	error string
+}
 
 struct RespVersions {
 	versions []string

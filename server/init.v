@@ -1,9 +1,7 @@
-module mxlib
+module server
 
 import net.http
 import net.urllib
-
-struct Null{}
 
 fn non_discovered(url &urllib.URL) (&urllib.URL, &urllib.URL) {
 	base_url := url.parse('/') or { *url }

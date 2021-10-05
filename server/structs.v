@@ -29,6 +29,13 @@ struct RespWellKnown {
 	identity_server IdentityServer [json: 'm.identity_server']
 }
 
-struct RespLogin {
+struct RespLoginGet {
 	flows []LoginFlow
+}
+
+struct RespLogin {
+	user_id string
+	access_token string
+	device_id string
+	well_known RespWellKnown
 }

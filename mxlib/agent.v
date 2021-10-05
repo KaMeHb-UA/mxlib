@@ -25,5 +25,20 @@ fn discover(url &urllib.URL) (&urllib.URL, &urllib.URL) {
 pub fn new(proto string, host string, port int) ?&Server {
 	homeserver, identity_server := discover(urllib.parse('$proto://$host:$port/')?)
 	r := call_method_wo_version<RespVersions, Null>(homeserver, http.Method.get, 'versions', map[string]string{}, Null{})?
-	return &Server{homeserver, identity_server, r.versions, r.unstable_features}
+	mut versions := map[string]map[string][]string{}
+	for version in r.versions {
+		version_parts := version.split('.')
+		if version_parts[0] !in versions {
+			versions[version_parts[0]] = map[string][]string{}
+		}
+		if version_parts[1] !in versions[version_parts[0]] {
+			versions[version_parts[0]][version_parts[1]] = [version_parts[2]]
+		}
+		if version_parts[2] !in versions[version_parts[0]][version_parts[1]] {
+			versions[version_parts[0]][version_parts[1]] << version_parts[2]
+		}
+	}
+	mut server := &Server{homeserver, identity_server, versions, r.unstable_features, []LoginFlow{}}
+	server.get_login_flows()?
+	return server
 }

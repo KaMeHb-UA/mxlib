@@ -13,7 +13,15 @@ struct IdentityServer {
 	base_url string
 }
 
+struct LoginFlow {
+	typ string [json: 'type']
+}
+
 struct RespWellKnown {
 	homeserver Homeserver [json: 'm.homeserver']
 	identity_server IdentityServer [json: 'm.identity_server']
+}
+
+struct RespLogin {
+	flows []LoginFlow
 }
